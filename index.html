@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çaycraft Server | Azerbaijani Minecraft Server</title>
+    <meta name="description" content="Çaycraft Server - Azərbaycanın ən rahat, əyləncəli və dostcanlı Minecraft serveridir. Əsl macəra bir stəkan çaydan başlayır!">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="bg-overlay"></div>
+    <div class="tea-leaf-pattern"></div>
+
+    <nav>
+        <div class="logo">
+            <i class="fas fa-mug-hot"></i>
+            <span>ÇAYCRAFT</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#about" data-t="nav_about">Haqqımızda</a></li>
+            <li><a href="#features" data-t="nav_features">Xüsusiyyətlər</a></li>
+            <li><a href="#server" data-t="nav_server">Server</a></li>
+            <li><a href="#community" data-t="nav_community">İcma</a></li>
+        </ul>
+        <div class="nav-controls">
+            <div class="lang-switcher">
+                <span class="lang-btn active" data-lang="az">AZ</span>
+                <span class="lang-btn" data-lang="en">EN</span>
+            </div>
+            <a href="https://discord.gg/cayxana" target="_blank" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">
+                <i class="fab fa-discord"></i> Discord
+            </a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-placeholder"></div>
+        <div class="hero-content">
+            <h1 data-t="hero_title">Çaycraft           </h1>
+            <p data-t="hero_subtitle">Azərbaycanın ən rahat və əyləncəli Minecraft serveri. Əsl macəra bir stəkan çaydan başlayır!</p>
+            <div class="hero-ctas">
+                <a href="minecraft://connect?server=play.caycraft.pro&port=25565" class="btn btn-primary" style="background: var(--secondary); border-bottom: 4px solid rgba(0,0,0,0.2);" onclick="handlePlay()">
+                    <i class="fas fa-cube"></i> <span data-t="cta_play">İndi Oyna</span>
+                </a>
+                <a href="https://discord.gg/cayxana" target="_blank" class="btn btn-primary" style="border-bottom: 4px solid rgba(0,0,0,0.2);">
+                    <i class="fab fa-discord"></i> <span data-t="cta_discord">Join Discord</span>
+                </a>
+                <a href="https://www.tiktok.com/@cayxana.tv" target="_blank" class="btn btn-outline" style="background: rgba(255,255,255,0.05);">
+                    <i class="fab fa-tiktok"></i> <span data-t="cta_tiktok">Follow TikTok</span>
+                </a>
+            </div>
+
+            <!-- Hypixel Style Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-pill">
+                    <div class="indicator pulse"></div>
+                    <div>
+                        <div class="val" id="playerCount">...</div>
+                        <div class="lbl" data-t="stat_online">Online</div>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <i class="fas fa-server" style="color: var(--accent);"></i>
+                    <div>
+                        <div class="val" id="serverVersion" style="color: var(--accent);">...</div>
+                        <div class="lbl" data-t="stat_version">Version</div>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <i class="fas fa-wifi" style="color: var(--primary);"></i>
+                    <div>
+                        <div class="val" style="color: var(--primary);">99.9%</div>
+                        <div class="lbl" data-t="stat_uptime">Uptime</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="section-header">
+            <h2 data-t="about_title">Niyə Biz?</h2>
+            <p data-t="about_desc">Cayxana sadəcə bir server deyil, eyni zamanda böyük bir ailədir.</p>
+        </div>
+        <div class="about-grid">
+            <div class="card">
+                <i class="fas fa-users"></i>
+                <h3 data-t="about_card1_title">Dostcanlı İcma</h3>
+                <p data-t="about_card1_desc">Toksiklikdən uzaq, hər kəsin bir-birinə hörmət etdiyi isti mühit.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-gamepad"></i>
+                <h3 data-t="about_card2_title">Unikal Gameplay</h3>
+                <p data-t="about_card2_desc">Başqa heç yerdə görməyəcəyiniz xüsusi pluginlər və mexanikalar.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-shield-halved"></i>
+                <h3 data-t="about_card3_title">Aktiv Adminlər</h3>
+                <p data-t="about_card3_desc">Suallarınızı cavablandırmağa və kömək etməyə hər zaman hazır olan heyət.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="section-header">
+            <h2 data-t="features_title">Server Xüsusiyyətləri</h2>
+            <p data-t="features_desc">Sizin üçün ən yaxşı təcrübəni hazırladıq.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon-wrapper"><i class="fas fa-plug"></i></div>
+                <h3 data-t="feat_card1_title">Özəl Pluginlər</h3>
+                <p data-t="feat_card1_desc">Serverin performansını və marağını artıran xüsusi sistemlər.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrapper"><i class="fas fa-trophy"></i></div>
+                <h3 data-t="feat_card2_title">Turnirlər</h3>
+                <p data-t="feat_card2_desc">Hər həftə sonu maraqlı yarışlar və dəyərli mükafatlar.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrapper"><i class="fas fa-coins"></i></div>
+                <h3 data-t="feat_card3_title">İqtisadiyyat</h3>
+                <p data-t="feat_card3_desc">Balanslaşdırılmış və maraqlı iqtisadi sistemlə öz imperiyanızı qurun.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrapper"><i class="fas fa-users"></i></div>
+                <h3 data-t="feat_card4_title">Dostluq Sistemləri</h3>
+                <p data-t="feat_card4_desc">Dostlarınızla eyni komandada oynamaq üçün xüsusi əmrlər.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MCCentral Style Game Modes -->
+    <section id="modes" style="background: #050505;">
+        <div class="section-header">
+            <h2 data-t="modes_title">Oyun Rejimləri</h2>
+            <p data-t="modes_desc">Hər zövqə uyğun fərqli macəralar.</p>
+        </div>
+        <div class="modes-grid">
+            <div class="mode-block">
+                <div class="mode-img-placeholder"></div>
+                <div class="mode-info">
+                    <h3 data-t="mode1_title">Survival</h3>
+                    <p data-t="mode1_desc">Klassik sağ qalma təcrübəsi, dostcanlı icma və xüsusi pluginlər.</p>
+                </div>
+            </div>
+            <div class="mode-block">
+                <div class="mode-img-placeholder"></div>
+                <div class="mode-info">
+                    <h3 data-t="mode2_title">BoxPvP</h3>
+                    <h3 style="display:none;" data-t="mode2_title">BoxPvP</h3> <!-- For translatable key -->
+                    <p data-t="mode2_desc">Sürətli və gərgin döyüşlər, xüsusi arenalar və rütbə sistemi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="server">
+        <div class="server-info-card">
+            <h2 data-t="server_title">Qoşul</h2>
+            <div class="ip-container" id="copyIp">
+                <span class="ip-text">PLAY.CAYCRAFT.PRO</span>
+                <i class="fas fa-copy"></i>
+            </div>
+            <div id="copyToast" style="display: none; color: var(--primary); font-size: 0.9rem; margin-top: -20px; margin-bottom: 20px;" data-t="ip_copied">İP Kopyalandı!</div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h4 id="playerCount">0</h4>
+                    <p data-t="stat_online">Onlayn Oyunçu</p>
+                </div>
+                <div class="stat-item">
+                    <h4>1.20.4</h4>
+                    <p data-t="stat_version">Dəstəklənən Versiya</p>
+                </div>
+                <div class="stat-item">
+                    <h4>99.9%</h4>
+                    <p data-t="stat_uptime">Uptime</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="section-header">
+            <h2 data-t="gallery_title">Qalereya</h2>
+            <p data-t="gallery_desc">Serverimizdən görüntülər (Tezliklə əlavə olunacaq).</p>
+        </div>
+        <div class="gallery-grid">
+            <div class="image-placeholder">
+                <i class="fas fa-image fa-2x"></i>
+                <span data-t="placeholder_text">Görüntü 1 (16:9)</span>
+            </div>
+            <div class="image-placeholder">
+                <i class="fas fa-image fa-2x"></i>
+                <span data-t="placeholder_text">Görüntü 2 (16:9)</span>
+            </div>
+            <div class="image-placeholder">
+                <i class="fas fa-image fa-2x"></i>
+                <span data-t="placeholder_text">Görüntü 3 (16:9)</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="community" style="background: var(--glass);">
+        <div class="section-header">
+            <h2 data-t="comm_title">İcmaya Qoşul</h2>
+            <p data-t="comm_desc">Media kanallarımızı izləyərək yeniliklərdən xəbərdar olun.</p>
+        </div>
+        <div class="about-grid">
+            <div class="card" style="text-align: center;">
+                <i class="fab fa-discord fa-3x"></i>
+                <h3>Discord</h3>
+                <p data-t="comm_discord_desc">4000+ üzv ilə söhbət edin və dəstək alın.</p>
+                <a href="https://discord.gg/cayxana" target="_blank" class="btn btn-primary" style="margin-top: 20px; justify-content: center;">Qoşul</a>
+            </div>
+            <div class="card" style="text-align: center;">
+                <i class="fab fa-tiktok fa-3x"></i>
+                <h3>TikTok</h3>
+                <p data-t="comm_tiktok_desc">Ən maraqlı anları və videoları izləyin.</p>
+                <a href="https://tiktok/cayxana.tv" target="_blank" class="btn btn-outline" style="margin-top: 20px; justify-content: center;">İzlə</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>ÇAYCRAFT</h2>
+                <p style="color: var(--text-muted); max-width: 300px;" data-t="footer_slogan">Azərbaycanın ən keyfiyyətli Minecraft macərası.</p>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 20px; font-weight: 700;">Keçidlər</h4>
+                <ul style="color: var(--text-muted); display: grid; gap: 10px;">
+                    <li><a href="#about">Haqqımızda</a></li>
+                    <li><a href="#features">Xüsusiyyətlər</a></li>
+                    <li><a href="#server">Server</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 20px; font-weight: 700;">Hüquqi</h4>
+                <ul style="color: var(--text-muted); display: grid; gap: 10px;">
+                    <li><a href="#" data-t="policy_privacy">Məxfilik Siyasəti</a></li>
+                    <li><a href="#" data-t="policy_terms">İstifadə Şərtləri</a></li>
+                    <li><a href="#" data-t="policy_refund">Geri Ödəniş Siyasəti</a></li>
+                </ul>
+            </div>
+            <div class="social-links">
+                <a href="https://discord.gg/cayxana" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+                <a href="https://tiktok/cayxana.tv" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Çaycraft. Bütün hüquqlar qorunur.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "caycraft-website",
+  "version": "1.0.0",
+  "description": "Caycraft Minecraft Server Website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y browser-sync start --server --files \"*.html, *.css, *.js\" "
+  },
+  "author": "Antigravity",
+  "license": "ISC"
+}
