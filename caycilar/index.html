@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çayçılar Paneli | Çaycraft Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        :root {
+            --admin-primary: #f59e0b;
+            --admin-secondary: #059669;
+            --admin-card-bg: rgba(15, 15, 20, 0.7);
+        }
+
+        body {
+            background-color: #050505;
+            overflow-x: hidden;
+        }
+
+        /* Login Screen Enhancements */
+        #loginOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #050505 100%);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .login-box {
+            background: var(--admin-card-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 60px 40px;
+            border-radius: 40px;
+            width: 450px;
+            text-align: center;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8), 0 0 40px rgba(245, 158, 11, 0.1);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .login-box i {
+            font-size: 4rem;
+            background: linear-gradient(to bottom, #fff, var(--admin-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.4));
+        }
+
+        /* Main Dashboard Layout */
+        .dashboard-container {
+            display: none; /* Hidden until login */
+            padding: 120px 5% 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeIn 1s ease;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            background: var(--admin-card-bg);
+            padding: 30px 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+        }
+
+        .admin-section {
+            background: var(--admin-card-bg);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 40px;
+            height: 100%;
+            transition: var(--transition);
+        }
+
+        .admin-section:hover {
+            border-color: rgba(245, 158, 11, 0.3);
+            background: rgba(25, 25, 30, 0.8);
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        /* Form Elements */
+        .input-wrapper {
+            margin-bottom: 25px;
+        }
+
+        .input-wrapper label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #ddd;
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            border-radius: 12px;
+            color: #fff;
+            transition: var(--transition);
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--admin-primary);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+            background: rgba(0,0,0,0.6);
+        }
+
+        /* Gallery List */
+        .gallery-editor {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-editor::-webkit-scrollbar {
+            width: 6px;
+        }
+        .gallery-editor::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        .gallery-item-admin {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .gallery-item-admin:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: var(--border);
+        }
+
+        .gallery-item-admin img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-delete-item {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-delete-item:hover {
+            background: #ef4444;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Custom scrollbar for entire page */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--admin-primary); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Login Section -->
+    <div id="loginOverlay">
+        <div class="login-box">
+            <i class="fas fa-hat-wizard"></i>
+            <h1 style="font-size: 2rem; margin-bottom: 10px;">Xoş Gəldin, Çayçı!</h1>
+            <p style="color: var(--text-muted); margin-bottom: 40px;">Zəhmət olmasa panelə giriş etmək üçün gizli şifrəni daxil et.</p>
+            
+            <div class="input-wrapper">
+                <input type="password" id="adminPass" placeholder="Şifrə..." style="text-align: center; font-size: 1.2rem; letter-spacing: 5px;">
+            </div>
+            
+            <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.1rem; padding: 18px;" onclick="checkLogin()">
+                Məkanı Aç <i class="fas fa-key" style="font-size: 1rem; margin: 0 0 0 10px; -webkit-text-fill-color: white;"></i>
+            </button>
+            <p id="loginError" style="color: #ef4444; margin-top: 20px; font-weight: 600; display: none;">Təəssüf, şifrə doğru deyil!</p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container" id="mainDashboard">
+        <div class="dashboard-header">
+            <div>
+                <h1 style="display: flex; align-items: center; gap: 15px;">
+                    <i class="fas fa-mug-hot" style="color: var(--admin-primary);"></i>
+                    Çayçıların İdarəetmə Paneli
+                </h1>
+                <p style="color: var(--text-muted);">Siz hal-hazırda Çaycraft dünyasının anlıq tənzimləmələrinə nəzarət edirsiniz.</p>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn btn-outline" onclick="downloadConfig()">
+                    <i class="fas fa-file-code"></i> config.js Yüklə
+                </button>
+                <button class="btn btn-primary" onclick="saveChanges()" style="box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);">
+                    <i class="fas fa-cloud-upload-alt"></i> Bütün Saytı Yenilə
+                </button>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Social & Global Settings -->
+            <div class="admin-section">
+                <h2 style="margin-bottom: 30px; display: flex; align-items: center; gap: 12px; font-size: 1.5rem;">
+                    <i class="fas fa-sliders-h" style="color: var(--admin-primary);"></i>
+                    Əsas Parametrlər
+                </h2>
+                
+                <div class="input-wrapper">
+                    <label><i class="fab fa-discord"></i> Discord Dəvət Linki</label>
+                    <input type="text" id="discordLink">
+                </div>
+                
+                <div class="input-wrapper">
+                    <label><i class="fab fa-tiktok"></i> TikTok Profili</label>
+                    <input type="text" id="tiktokLink">
+                </div>
+                
+                <div class="input-wrapper">
+                    <label><i class="fas fa-code-branch"></i> Dəstəklənən Versiyalar</label>
+                    <input type="text" id="versionRange">
+                </div>
+
+                <div style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 30px;">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                        <i class="fas fa-info-circle"></i> 
+                        Bu hissədə edilən dəyişikliklər dərhal saytın başlığında, oyna düyməsində və footer hissəsində əks olunacaq.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Gallery Manager -->
+            <div class="admin-section">
+                <h2 style="margin-bottom: 30px; display: flex; align-items: center; gap: 12px; font-size: 1.5rem;">
+                    <i class="fas fa-photo-video" style="color: var(--admin-primary);"></i>
+                    Qalereya & Görüntülər
+                </h2>
+
+                <div class="gallery-editor" id="galleryList">
+                    <!-- Items -->
+                </div>
+
+                <div style="background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px dashed var(--border);">
+                    <h4 style="margin-bottom: 15px;">Yeni Şəkil Əlavə Et</h4>
+                    <div class="input-wrapper">
+                        <input type="text" id="newImgUrl" placeholder="Şəklin Linki (Direct URL)...">
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" id="newImgTitle" placeholder="Şəkil üçün Başlıq...">
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%; border-style: solid;" onclick="addImage()">
+                        <i class="fas fa-plus-circle"></i> Siyahıya Əlavə Et
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+            © 2026 Çayxana Ailəsi. Sistemin adı: <strong>Çayçılar Paneli v1.1 Premium</strong>
+        </div>
+    </div>
+
+    <script src="../config.js"></script>
+    <script>
+        let currentCfg = getAppConfig();
+        const cursorGlow = document.getElementById('cursorGlow');
+
+        document.addEventListener('mousemove', (e) => {
+            if (cursorGlow) {
+                cursorGlow.style.left = `${e.clientX}px`;
+                cursorGlow.style.top = `${e.clientY}px`;
+                cursorGlow.style.opacity = '1';
+            }
+        });
+
+        function checkLogin() {
+            const pass = document.getElementById('adminPass').value;
+            // User requested password: salamqaradovsan
+            if (pass === 'salamqaradovsan') {
+                const overlay = document.getElementById('loginOverlay');
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    document.getElementById('mainDashboard').style.display = 'block';
+                    loadData();
+                }, 800);
+            } else {
+                const error = document.getElementById('loginError');
+                error.style.display = 'block';
+                error.style.animation = 'shake 0.3s ease';
+                setTimeout(() => error.style.animation = '', 300);
+            }
+        }
+
+        // Allow Enter key to login
+        document.getElementById('adminPass').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkLogin();
+        });
+
+        function loadData() {
+            document.getElementById('discordLink').value = currentCfg.discord;
+            document.getElementById('tiktokLink').value = currentCfg.tiktok;
+            document.getElementById('versionRange').value = currentCfg.versions || "1.8 - 1.21.x";
+            renderGallery();
+        }
+
+        function renderGallery() {
+            const list = document.getElementById('galleryList');
+            list.innerHTML = '';
+            currentCfg.gallery.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'gallery-item-admin';
+                el.innerHTML = `
+                    <img src="${item.url}" alt="">
+                    <div style="flex-grow: 1;">
+                        <h4 style="margin:0">${item.title}</h4>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0; word-break: break-all;">${item.url.substring(0, 40)}...</p>
+                    </div>
+                    <button class="btn-action btn-delete-item" onclick="deleteImage(${index})">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                `;
+                list.appendChild(el);
+            });
+        }
+
+        function addImage() {
+            const url = document.getElementById('newImgUrl').value;
+            const title = document.getElementById('newImgTitle').value;
+            if (url && title) {
+                currentCfg.gallery.push({ url, title });
+                document.getElementById('newImgUrl').value = '';
+                document.getElementById('newImgTitle').value = '';
+                renderGallery();
+            }
+        }
+
+        function deleteImage(index) {
+            currentCfg.gallery.splice(index, 1);
+            renderGallery();
+        }
+
+        function saveChanges() {
+            currentCfg.discord = document.getElementById('discordLink').value;
+            currentCfg.tiktok = document.getElementById('tiktokLink').value;
+            currentCfg.versions = document.getElementById('versionRange').value;
+            
+            localStorage.setItem('caycraftAdminConfig', JSON.stringify(currentCfg));
+            showNotification('Uğurlu!', 'Bütün dəyişikliklər brauzerdə qeydə alındı.');
+        }
+
+        function showNotification(title, msg) {
+            // Simple alert replacement
+            alert(`${title}\n${msg}`);
+        }
+
+        function downloadConfig() {
+            const configCode = `const siteConfig = ${JSON.stringify(currentCfg, null, 4)};
+
+// Initial load into localStorage if not present
+if (!localStorage.getItem('caycraftAdminConfig')) {
+    localStorage.setItem('caycraftAdminConfig', JSON.stringify(siteConfig));
+}
+
+function getAppConfig() {
+    return JSON.parse(localStorage.getItem('caycraftAdminConfig')) || siteConfig;
+}`;
+            const blob = new Blob([configCode], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'config.js';
+            a.click();
+        }
+    </script>
+</body>
+</html>

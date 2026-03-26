@@ -1,3 +1,36 @@
+// Load Config and Apply Local Overrides
+const cfg = getAppConfig();
+
+// Apply Config to Links
+function applySiteConfig() {
+    document.querySelectorAll('a[href*="discord.gg"]').forEach(el => el.href = cfg.discord);
+    document.querySelectorAll('a[href*="tiktok.com"]').forEach(el => el.href = cfg.tiktok);
+    const fullVersionEl = document.getElementById('fullVersionRange');
+    if (fullVersionEl) fullVersionEl.textContent = cfg.versions;
+    
+    // Dynamic Gallery
+    const galleryGrid = document.querySelector('.gallery-grid');
+    if (galleryGrid) {
+        galleryGrid.innerHTML = '';
+        cfg.gallery.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'feature-card'; // Reusing feature-card style
+            card.style.padding = '0';
+            card.style.overflow = 'hidden';
+            card.innerHTML = `
+                <div style="height: 200px; background: url('${item.url}') center/cover no-repeat;"></div>
+                <div style="padding: 20px;">
+                    <h3 style="margin:0">${item.title}</h3>
+                </div>
+            `;
+            galleryGrid.appendChild(card);
+        });
+    }
+}
+
+// Call on startup
+window.addEventListener('DOMContentLoaded', applySiteConfig);
+
 const translations = {
     az: {
         nav_about: "Haqqımızda",
@@ -218,7 +251,7 @@ async function updateServerStats() {
 
         // Update Version Range (if any)
         if (fullVersionEl && (javaRes.version || bedrockRes.version)) {
-            fullVersionEl.textContent = `${javaRes.version || '1.8'} - ${bedrockRes.version || '1.21.x'}`;
+            fullVersionEl.textContent = cfg.versions || `${javaRes.version || '1.8'} - ${bedrockRes.version || '1.21.x'}`;
         }
 
     } catch (error) {
