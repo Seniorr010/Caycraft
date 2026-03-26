@@ -9,21 +9,22 @@ function applySiteConfig() {
     if (fullVersionEl) fullVersionEl.textContent = cfg.versions;
     
     // Dynamic Gallery
-    const galleryGrid = document.querySelector('.gallery-grid');
-    if (galleryGrid) {
-        galleryGrid.innerHTML = '';
+    const grid = document.getElementById('galleryGrid');
+    if (grid) {
+        grid.innerHTML = '';
         cfg.gallery.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'feature-card'; // Reusing feature-card style
-            card.style.padding = '0';
-            card.style.overflow = 'hidden';
-            card.innerHTML = `
-                <div style="height: 200px; background: url('${item.url}') center/cover no-repeat;"></div>
-                <div style="padding: 20px;">
-                    <h3 style="margin:0">${item.title}</h3>
+            if (!item || !item.url) return;
+            const slot = document.createElement('div');
+            slot.className = 'image-placeholder';
+            slot.style.border = "none";
+            slot.innerHTML = `
+                <div style="width:100%; height:100%; background: url('${item.url}') center/cover no-repeat; border-radius: 20px;"></div>
+                <div style="position:absolute; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.7); padding:10px; border-radius: 0 0 20px 20px;">
+                    <h4 style="margin:0; font-size: 0.8rem; text-align:center;">${item.title}</h4>
                 </div>
             `;
-            galleryGrid.appendChild(card);
+            slot.style.position = 'relative';
+            grid.appendChild(slot);
         });
     }
 }

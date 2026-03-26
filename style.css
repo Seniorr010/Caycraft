@@ -547,10 +547,12 @@ section {
 }
 
 /* Gallery Placeholders */
+/* Gallery Grid (Advanced) */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 40px;
+    padding-top: 20px;
 }
 
 .image-placeholder {
@@ -565,6 +567,8 @@ section {
     gap: 12px;
     color: var(--text-muted);
     transition: var(--transition);
+    position: relative;
+    overflow: visible; /* To let admin icons hover outside slightly if needed */
 }
 
 .image-placeholder:hover {
