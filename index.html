@@ -9,7 +9,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -64,23 +64,30 @@
             <!-- Hypixel Style Stats Bar -->
             <div class="stats-bar">
                 <div class="stat-pill">
-                    <div class="indicator pulse"></div>
+                    <div class="indicator pulse" id="mainIndicator"></div>
                     <div>
-                        <div class="val" id="playerCount">...</div>
+                        <div class="val player-count-val">0</div>
                         <div class="lbl" data-t="stat_online">Online</div>
                     </div>
                 </div>
                 <div class="stat-pill">
-                    <i class="fas fa-server" style="color: var(--accent);"></i>
+                    <i class="fas fa-desktop" title="Java Edition"></i>
                     <div>
-                        <div class="val" id="serverVersion" style="color: var(--accent);">...</div>
-                        <div class="lbl" data-t="stat_version">Version</div>
+                        <div class="val" id="javaVersion">...</div>
+                        <div class="lbl">Java</div>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <i class="fas fa-mobile-alt" title="Bedrock Edition"></i>
+                    <div>
+                        <div class="val" id="bedrockVersion">...</div>
+                        <div class="lbl">Bedrock</div>
                     </div>
                 </div>
                 <div class="stat-pill">
                     <i class="fas fa-wifi" style="color: var(--primary);"></i>
                     <div>
-                        <div class="val" style="color: var(--primary);">99.9%</div>
+                        <div class="val">99.9%</div>
                         <div class="lbl" data-t="stat_uptime">Uptime</div>
                     </div>
                 </div>
@@ -177,16 +184,20 @@
             
             <div class="stats-grid">
                 <div class="stat-item">
-                    <h4 id="playerCount">0</h4>
+                    <h4 class="player-count-val">0</h4>
                     <p data-t="stat_online">Onlayn Oyunçu</p>
                 </div>
                 <div class="stat-item">
-                    <h4>1.20.4</h4>
-                    <p data-t="stat_version">Dəstəklənən Versiya</p>
+                    <h4 id="javaStatus">İnternet...</h4>
+                    <p>JAVA PLATFORMU</p>
                 </div>
                 <div class="stat-item">
-                    <h4>99.9%</h4>
-                    <p data-t="stat_uptime">Uptime</p>
+                    <h4 id="bedrockStatus">İnternet...</h4>
+                    <p>BEDROCK PLATFORMU</p>
+                </div>
+                <div class="stat-item">
+                    <h4 id="fullVersionRange">1.8 - 1.21.x</h4>
+                    <p data-t="stat_version">Dəstəklənən Versiya</p>
                 </div>
             </div>
         </div>
@@ -251,9 +262,9 @@
             <div>
                 <h4 style="margin-bottom: 20px; font-weight: 700;">Hüquqi</h4>
                 <ul style="color: var(--text-muted); display: grid; gap: 10px;">
-                    <li><a href="#" data-t="policy_privacy">Məxfilik Siyasəti</a></li>
-                    <li><a href="#" data-t="policy_terms">İstifadə Şərtləri</a></li>
-                    <li><a href="#" data-t="policy_refund">Geri Ödəniş Siyasəti</a></li>
+                    <li><a href="privacy.html" data-t="policy_privacy">Məxfilik Siyasəti</a></li>
+                    <li><a href="terms.html" data-t="policy_terms">İstifadə Şərtləri</a></li>
+                    <li><a href="refund.html" data-t="policy_refund">Geri Ödəniş Siyasəti</a></li>
                 </ul>
             </div>
             <div class="social-links">
@@ -261,8 +272,8 @@
                 <a href="https://tiktok/cayxana.tv" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
             </div>
         </div>
-        <div class="copyright">
-            &copy; 2026 Çaycraft. Bütün hüquqlar qorunur.
+        <div class="copyright" data-t="copyright_text">
+            Cayxana Ailəsi
         </div>
     </footer>
 

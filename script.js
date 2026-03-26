@@ -37,18 +37,19 @@ const translations = {
         stat_online: "Onlayn Oyunçu",
         stat_version: "Dəstəklənən Versiya",
         stat_uptime: "Uptime",
-        ip_copied: "İP Kopyalandı!",
+        ip_copied: "Kopyalandı!",
         gallery_title: "Qalereya",
         gallery_desc: "Görüntülər (Tezliklə əlavə olunacaq).",
         placeholder_text: "Görüntü (16:9)",
         comm_title: "İcmaya Qoşul",
         comm_desc: "Media kanallarımızı izləyərək yeniliklərdən xəbərdar olun.",
-        comm_discord_desc: "4000+ üzv ilə söhbət edin və dəstək alın.",
+        comm_discord_desc: "{count} üzv ilə söhbət edin və dəstək alın.",
         comm_tiktok_desc: "Ən maraqlı anları və videoları izləyin.",
         footer_slogan: "Azərbaycanın ən keyfiyyətli Minecraft macərası.",
         policy_privacy: "Məxfilik Siyasəti",
         policy_terms: "İstifadə Şərtləri",
-        policy_refund: "Geri Ödəniş Siyasəti"
+        policy_refund: "Geri Ödəniş Siyasəti",
+        copyright_text: "Cayxana Ailəsi"
     },
     en: {
         nav_about: "About",
@@ -88,18 +89,19 @@ const translations = {
         stat_online: "Online Players",
         stat_version: "Supported Version",
         stat_uptime: "Uptime",
-        ip_copied: "IP Copied!",
+        ip_copied: "Copied!",
         gallery_title: "Gallery",
         gallery_desc: "Screenshots from our site (Coming soon).",
         placeholder_text: "Image (16:9)",
         comm_title: "Join Community",
         comm_desc: "Stay updated by following our media channels.",
-        comm_discord_desc: "Chat and get support with over 4000+ members.",
+        comm_discord_desc: "Chat and get support with over {count} members.",
         comm_tiktok_desc: "Watch the most exciting moments and videos.",
         footer_slogan: "The highest quality Minecraft adventure in Azerbaijan.",
         policy_privacy: "Privacy Policy",
         policy_terms: "Terms of Service",
-        policy_refund: "Refund Policy"
+        policy_refund: "Refund Policy",
+        copyright_text: "Cayxana Family"
     }
 };
 
@@ -125,7 +127,12 @@ function setLanguage(lang) {
     document.querySelectorAll('[data-t]').forEach(el => {
         const key = el.getAttribute('data-t');
         if (translations[lang][key]) {
-            el.textContent = translations[lang][key];
+            let text = translations[lang][key];
+            // Handle placeholders
+            if (key === 'comm_discord_desc') {
+                text = text.replace('{count}', window.discordMemberCount || '...');
+            }
+            el.textContent = text;
         }
     });
 
@@ -149,41 +156,114 @@ copyIp.addEventListener('click', () => {
     });
 });
 
-// Real Server Stats (MCSrvStat.us)
+// Advanced Server Stats Query
 async function updateServerStats() {
-    const playerCountEl = document.getElementById('playerCount');
-    const serverVersionEl = document.getElementById('serverVersion');
+    const playerCountEls = document.querySelectorAll('.player-count-val');
+    const javaVersionEl = document.getElementById('javaVersion');
+    const bedrockVersionEl = document.getElementById('bedrockVersion');
+    const javaStatusEl = document.getElementById('javaStatus');
+    const bedrockStatusEl = document.getElementById('bedrockStatus');
+    const fullVersionEl = document.getElementById('fullVersionRange');
+    const mainIndicator = document.getElementById('mainIndicator');
+
+    const domain = 'play.caycraft.pro';
+    let totalOnline = 0;
     
     try {
-        const response = await fetch('https://api.mcsrvstat.us/2/play.caycraft.pro');
-        const data = await response.json();
-        
-        if (data.online) {
-            playerCountEl.textContent = data.players.online;
-            // Display the server's reported version (e.g., "1.21" or "1.8-1.21")
-            serverVersionEl.textContent = data.version || "Bilinmir";
-            
-            // Optional: You could update an online indicator color here too
-            const indicator = document.querySelector('.indicator');
-            if (indicator) indicator.style.background = 'var(--secondary)';
+        // Fetch Java & Bedrock stats in parallel
+        const [javaRes, bedrockRes] = await Promise.all([
+            fetch(`https://api.mcsrvstat.us/2/${domain}`).then(r => r.json()),
+            fetch(`https://api.mcsrvstat.us/bedrock/2/${domain}`).then(r => r.json())
+        ]);
+
+        // Java Processing
+        if (javaRes.online) {
+            totalOnline += javaRes.players.online;
+            if (javaVersionEl) javaVersionEl.textContent = javaRes.version || "1.21";
+            if (javaStatusEl) {
+                javaStatusEl.textContent = "ONLINE";
+                javaStatusEl.style.color = "var(--secondary)";
+            }
         } else {
-            // Under development/Maintenance status
-            playerCountEl.textContent = "0";
-            serverVersionEl.textContent = currentLang === 'az' ? "Təmirdə" : "Maintenance";
-            
-            const indicator = document.querySelector('.indicator');
-            if (indicator) indicator.style.background = '#888'; // Gray for offline
+            if (javaVersionEl) javaVersionEl.textContent = "---";
+            if (javaStatusEl) {
+                javaStatusEl.textContent = "OFFLINE";
+                javaStatusEl.style.color = "#888";
+            }
         }
+
+        // Bedrock Processing
+        if (bedrockRes.online) {
+            totalOnline += bedrockRes.players.online;
+            if (bedrockVersionEl) bedrockVersionEl.textContent = bedrockRes.version || "Bilinmir";
+            if (bedrockStatusEl) {
+                bedrockStatusEl.textContent = "ONLINE";
+                bedrockStatusEl.style.color = "var(--secondary)";
+            }
+        } else {
+            if (bedrockVersionEl) bedrockVersionEl.textContent = "---";
+            if (bedrockStatusEl) {
+                bedrockStatusEl.textContent = "OFFLINE";
+                bedrockStatusEl.style.color = "#888";
+            }
+        }
+
+        // Animated Player Count
+        animateNumber(playerCountEls, totalOnline);
+
+        // Update main indicator based on overall availability
+        if (mainIndicator) {
+            mainIndicator.style.background = (javaRes.online || bedrockRes.online) ? 'var(--secondary)' : '#888';
+        }
+
+        // Update Version Range (if any)
+        if (fullVersionEl && (javaRes.version || bedrockRes.version)) {
+            fullVersionEl.textContent = `${javaRes.version || '1.8'} - ${bedrockRes.version || '1.21.x'}`;
+        }
+
     } catch (error) {
-        console.error("Server fetch failed:", error);
-        playerCountEl.textContent = "0";
-        serverVersionEl.textContent = "?";
+        console.error("Advanced fetch failed:", error);
     }
 }
 
-// Initial fetch and 60s update
+function animateNumber(elements, target) {
+    elements.forEach(el => {
+        const start = parseInt(el.textContent) || 0;
+        const duration = 1000;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = Math.floor(start + (target - start) * progress);
+            el.textContent = current;
+            if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+    });
+}
+
+// Real Discord Stats
+async function updateDiscordStats() {
+    try {
+        const response = await fetch('https://discord.com/api/v9/invites/cayxana?with_counts=true');
+        const data = await response.json();
+        
+        if (data.approximate_member_count) {
+            window.discordMemberCount = data.approximate_member_count;
+            // Refresh language to update the text with new count
+            setLanguage(currentLang);
+        }
+    } catch (error) {
+        console.error("Discord fetch failed:", error);
+    }
+}
+
+// Initial fetch and 15s update
 updateServerStats();
-setInterval(updateServerStats, 60000);
+updateDiscordStats();
+setInterval(updateServerStats, 15000); // More frequent updates for real-time feel
+setInterval(updateDiscordStats, 300000); // Discord updates less frequently
 
 // Scroll Animations (Simple Intersection Observer)
 const observerOptions = {
